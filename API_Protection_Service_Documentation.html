@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Protection Service - Complete File Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #1e40af;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .date {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        h2 {
+            color: #1e40af;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2563eb;
+            padding-left: 15px;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #2563eb;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            page-break-after: avoid;
+        }
+        
+        .file-section {
+            background: #f9fafb;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            page-break-inside: avoid;
+        }
+        
+        .file-path {
+            font-family: 'Courier New', monospace;
+            background: #e5e7eb;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #1f2937;
+            font-weight: bold;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .file-purpose {
+            font-weight: bold;
+            color: #1e40af;
+            margin: 10px 0 5px 0;
+        }
+        
+        .file-contains {
+            font-weight: bold;
+            color: #1e40af;
+            margin: 10px 0 5px 0;
+        }
+        
+        .file-role {
+            font-weight: bold;
+            color: #1e40af;
+            margin: 10px 0 5px 0;
+        }
+        
+        ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #1f2937;
+        }
+        
+        .overview {
+            background: #eff6ff;
+            border-left: 4px solid #0284c7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .overview p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #1e40af;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        
+        .architecture {
+            background: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        .directory-section {
+            margin: 30px 0 20px 0;
+        }
+        
+        .toc {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style-position: inside;
+        }
+        
+        .toc li {
+            margin-bottom: 5px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #d1d5db;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .feature-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .impact-high { color: #dc2626; font-weight: bold; }
+        .impact-medium { color: #ea580c; font-weight: bold; }
+        .impact-low { color: #16a34a; font-weight: bold; }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 40px;
+            }
+            h2 { page-break-before: always; }
+            .file-section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 API Protection Service</h1>
+            <p class="subtitle">Complete File Documentation Report</p>
+            <p class="subtitle">Comprehensive Guide to Every File, Role, and Function</p>
+            <p class="date">Generated: March 25, 2026</p>
+        </div>
+
+        <!-- Executive Summary -->
+        <h2>Executive Summary</h2>
+        <div class="overview">
+            <p>
+                <strong>API Protection Service</strong> is a production-grade Go microservice that provides real-time detection and blocking of malicious traffic compliant with OWASP Top 10 vulnerabilities.
+            </p>
+            <p>
+                <strong>Core Architecture:</strong> The service implements a layered security architecture using gRPC as the communication protocol between an HTTP Gateway and a dedicated Security Service. All security decisions are logged to MongoDB for audit trails, and critical violations are published to Kafka for real-time alert processing.
+            </p>
+            <p>
+                <strong>Key Features:</strong> Input validation, role-based access control (RBAC), object-level authorization, per-client rate limiting, injection attack detection, cryptographic hashing, and asynchronous alert publishing.
+            </p>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="toc">
+            <h3>📑 Quick Navigation</h3>
+            <ul>
+                <li><strong>Root Level Files:</strong> Project configuration and dependencies</li>
+                <li><strong>cmd/ Directory:</strong> Three executable entry points</li>
+                <li><strong>proto/ Directory:</strong> gRPC service definitions</li>
+                <li><strong>internal/ Directory:</strong> Private business logic and handlers</li>
+                <li><strong>pkg/ Directory:</strong> Reusable utilities and cryptography</li>
+                <li><strong>config/ Directory:</strong> Environment-specific configuration</li>
+            </ul>
+        </div>
+
+        <!-- ROOT LEVEL FILES -->
+        <h2>1. Root Level Files</h2>
+
+        <div class="file-section">
+            <div class="file-path">📄 go.mod</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Go module definition and dependency management file</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Module name: <code>api-protection</code></li>
+                <li>Go version: <code>1.26.1</code></li>
+                <li><strong>Direct dependencies:</strong>
+                    <ul>
+                        <li><code>github.com/go-playground/validator/v10</code> - Input validation with custom rules</li>
+                        <li><code>github.com/twmb/franz-go</code> - Kafka producer for alert publishing</li>
+                        <li><code>go.mongodb.org/mongo-driver</code> - MongoDB client for audit logging</li>
+                        <li><code>golang.org/x/crypto</code> - Cryptographic primitives (Argon2id)</li>
+                        <li><code>golang.org/x/time</code> - Token bucket rate limiting</li>
+                        <li><code>google.golang.org/grpc</code> - gRPC framework</li>
+                        <li><code>google.golang.org/protobuf</code> - Protocol buffers serialization</li>
+                    </ul>
+                </li>
+                <li>Transitive dependencies for compression, authentication, string handling</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Manages all Go dependencies and their versions. Essential for reproducible builds across different environments. Ensures all team members use the same dependency versions.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 README.md</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Primary project documentation for developers</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Project description (malicious traffic detection, OWASP Top 10)</li>
+                <li>Architecture overview (HTTP Gateway → gRPC Security Service)</li>
+                <li>Directory structure explanation</li>
+                <li>Instructions to run security service on port 50051</li>
+                <li>Command to regenerate gRPC code after proto changes</li>
+                <li>Database and messaging system integration notes</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>First point of reference for developers. Provides quick start guide, architecture context, and instructions for common operations like running the service and regenerating code.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 buf.gen.yaml</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Buf code generation configuration for Protocol Buffers</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Version: <code>v2</code> (latest Buf schema version)</li>
+                <li>Two code generator plugins:
+                    <ul>
+                        <li><code>buf.build/protocolbuffers/go</code> - Generates Go message code</li>
+                        <li><code>buf.build/grpc/go</code> - Generates Go gRPC service code</li>
+                    </ul>
+                </li>
+                <li>Output directory: <code>proto/genProto</code></li>
+                <li>Option: <code>paths=source_relative</code> - Generates code next to proto files</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Defines the automated code generation workflow. When developers run <code>buf generate proto</code>, this config tells Buf which plugins to use and where to output the generated Go code. Run this whenever <code>security.proto</code> changes.</p>
+        </div>
+
+        <!-- CMD DIRECTORY -->
+        <h2>2. cmd/ Directory - Entry Points</h2>
+        <p>Contains three separate executable entry points, each with its own <code>main.go</code> file. Run with <code>go run ./cmd/&lt;service&gt;</code></p>
+
+        <div class="file-section">
+            <div class="file-path">📄 cmd/security-service/main.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Main entry point for the gRPC security verification service</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>Environment configuration:</strong>
+                    <ul>
+                        <li><code>MONGODB_URI</code> - MongoDB connection string (default: localhost:27017)</li>
+                        <li><code>MONGODB_DB</code> - Database name (default: api_protection)</li>
+                        <li><code>KAFKA_BROKERS</code> - Kafka broker addresses (default: localhost:9092)</li>
+                    </ul>
+                </li>
+                <li><strong>Initialization sequence:</strong>
+                    <ul>
+                        <li>MongoDB connection with error handling and logging</li>
+                        <li>Database and collection creation</li>
+                        <li>Kafka producer setup</li>
+                    </ul>
+                </li>
+                <li><strong>Dependency injection:</strong>
+                    <ul>
+                        <li>Wires MongoStore (persistence)</li>
+                        <li>Wires Kafka producer (alerting)</li>
+                        <li>Creates SecurityService (business logic)</li>
+                        <li>Creates SecurityGRPCHandler (gRPC adapter)</li>
+                    </ul>
+                </li>
+                <li><strong>gRPC server setup:</strong>
+                    <ul>
+                        <li>Registers MetadataInterceptor (extracts/sanitizes metadata)</li>
+                        <li>Registers RateLimitInterceptor (per-client rate limiting)</li>
+                        <li>Registers SecurityGRPCHandler</li>
+                        <li>Listens on port 50051</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Bootstrap and orchestration center. Initializes all external connections (MongoDB, Kafka), wires the dependency injection container, sets up gRPC middleware stack, and starts the security service. The heart of the entire system.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 cmd/gateway/main.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Entry point for the HTTP API Gateway (currently a placeholder)</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Minimal stub implementation</li>
+                <li>Prints "Gateway Starting..." message</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Will serve as the HTTP frontend that receives client requests, consults the gRPC security service for verification, and forwards only ALLOW-verdicted requests to the backend application. Currently incomplete - awaiting Phase 3 implementation.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 cmd/test-client/main.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Automated test client for verifying security service behavior</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>gRPC client connection:</strong> Connects to localhost:50051</li>
+                <li><strong>Five test scenarios:</strong>
+                    <ul>
+                        <li>Test 1: Public endpoint access (anonymous, expected ALLOW)</li>
+                        <li>Test 2: Health check endpoint (anonymous, expected ALLOW)</li>
+                        <li>Test 3: Users endpoint without role (no roles, expected DENY)</li>
+                        <li>Test 4: Users endpoint with user role (user role, expected ALLOW)</li>
+                        <li>Test 5: Admin dashboard with admin role (admin role, expected ALLOW)</li>
+                    </ul>
+                </li>
+                <li><strong>Request metadata injection:</strong> Passes roles as <code>x-roles</code> header</li>
+                <li><strong>Response verification:</strong> Displays verdict and denial reason</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Automated test harness for validating RBAC rules and authorization behavior. Run after deploying security service to verify that authorization rules work correctly. Also useful for debugging authorization issues.</p>
+        </div>
+
+        <!-- PROTO DIRECTORY -->
+        <h2>3. proto/ Directory - gRPC API Contract</h2>
+
+        <div class="file-section">
+            <div class="file-path">📄 proto/buf.yaml</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Buf CLI configuration for the proto folder</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Version: <code>v2</code> (current Buf schema version)</li>
+                <li>Minimal configuration - inherits generation rules from root <code>buf.gen.yaml</code></li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Configuration file for the Buf CLI in the proto directory. Works in conjunction with the root <code>buf.gen.yaml</code> to enable code generation when running <code>buf generate proto</code>.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 proto/security.proto</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>The source-of-truth gRPC service and message contract definitions</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>Package:</strong> <code>security</code></li>
+                <li><strong>gRPC Service Definition:</strong>
+                    <ul>
+                        <li>Service name: <code>SecurityService</code></li>
+                        <li>Single RPC method: <code>Verify(VerifyRequest) → VerifyResponse</code></li>
+                    </ul>
+                </li>
+                <li><strong>Message Definitions:</strong>
+                    <ul>
+                        <li><code>VerifyRequest</code> - Request payload with 3 fields:
+                            <ul>
+                                <li><code>path</code> (string) - HTTP request path</li>
+                                <li><code>method</code> (string) - HTTP method (GET, POST, etc.)</li>
+                                <li><code>client_ip</code> (string) - Client IP address</li>
+                            </ul>
+                        </li>
+                        <li><code>VerifyResponse</code> - Response payload with 2 fields:
+                            <ul>
+                                <li><code>verdict</code> (Verdict enum) - Decision result</li>
+                                <li><code>reason</code> (string) - Explanation of denial (if denied)</li>
+                            </ul>
+                        </li>
+                        <li><code>Verdict</code> - Enum with 3 values:
+                            <ul>
+                                <li><code>VERDICT_UNSPECIFIED = 0</code> - Invalid/undefined</li>
+                                <li><code>ALLOW = 1</code> - Request allowed</li>
+                                <li><code>DENY = 2</code> - Request denied</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>The critical API contract between the gateway and security service. Defines the exact structure and semantics of all gRPC communication. <strong>Any changes here must be followed by code regeneration.</strong> This is the interface contract that all clients and servers must adhere to.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 proto/genProto/security.pb.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Auto-generated Protocol Buffer message code</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Go struct definitions for <code>VerifyRequest</code>, <code>VerifyResponse</code>, and <code>Verdict</code></li>
+                <li>Serialization methods (marshal to binary)</li>
+                <li>Deserialization methods (unmarshal from binary)</li>
+                <li>Field accessors and validators</li>
+                <li>Descriptor methods for reflection</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p><strong>⚠️ AUTO-GENERATED - DO NOT EDIT MANUALLY.</strong> This file is generated from <code>security.proto</code> when running <code>buf generate proto</code>. It provides the Go runtime representation of protobuf messages and serialization logic.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 proto/genProto/security_grpc.pb.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Auto-generated gRPC service server and client code</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><code>SecurityServiceServer</code> interface - What servers must implement</li>
+                <li><code>SecurityServiceClient</code> interface - What clients can use</li>
+                <li><code>UnimplementedSecurityServiceServer</code> - Base implementation for forward compatibility</li>
+                <li><code>NewSecurityServiceClient()</code> - Client factory function</li>
+                <li>Registration functions and server multiplexing logic</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p><strong>⚠️ AUTO-GENERATED - DO NOT EDIT MANUALLY.</strong> This file is generated from <code>security.proto</code> when running <code>buf generate proto</code>. It provides the gRPC runtime infrastructure that enables RPC communication between client and server.</p>
+        </div>
+
+        <!-- INTERNAL DIRECTORY -->
+        <h2>4. internal/ Directory - Private Business Logic</h2>
+        <p>Contains all business logic, services, and handlers. These are private packages not meant to be imported by external projects.</p>
+
+        <h3>4.1 Handler Layer - gRPC Adapter</h3>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/handler/grpc.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Adapter between gRPC protocol layer and business logic layer</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><code>SecurityGRPCHandler</code> struct:
+                    <ul>
+                        <li>Embeds <code>UnimplementedSecurityServiceServer</code> (generated code)</li>
+                        <li>References <code>*SecurityService</code> for business logic</li>
+                    </ul>
+                </li>
+                <li><code>NewSecurityGRPCHandler()</code> - Constructor</li>
+                <li><code>Verify()</code> method - Implements gRPC server interface by delegating to service</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Implements the <code>SecurityServiceServer</code> interface. Acts as a thin adapter that translates gRPC calls into service method calls. Follows the layered architecture pattern and keeps gRPC concerns separate from business logic.</p>
+        </div>
+
+        <h3>4.2 Service Layer - Core Business Logic</h3>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/service/security.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Core security verification and authorization decision engine</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>SecurityService</strong> struct with dependencies:
+                    <ul>
+                        <li><code>store</code> - Persistence layer (MongoDB)</li>
+                        <li><code>alertPublisher</code> - Event publisher (Kafka)</li>
+                        <li><code>rbac</code> - Authorization checker</li>
+                    </ul>
+                </li>
+                <li><strong>Verify() method</strong> - The core verification logic:
+                    <ul>
+                        <li><strong>Step 1: Input Validation</strong>
+                            <ul>
+                                <li>Validates path format, HTTP method, IP address</li>
+                                <li>Fail-fast: returns DENY immediately if validation fails</li>
+                                <li>Provides detailed error message explaining validation failure</li>
+                            </ul>
+                        </li>
+                        <li><strong>Step 2: RBAC + Object-Level Authorization</strong>
+                            <ul>
+                                <li>Extracts user ID and roles from context</li>
+                                <li>Checks if user's roles grant access to requested resource</li>
+                                <li>Supports object-level authorization (users can only access own profile)</li>
+                                <li>Returns DENY with reason if authorization fails</li>
+                            </ul>
+                        </li>
+                        <li><strong>Default Action:</strong> ALLOW if both validation and authorization pass</li>
+                    </ul>
+                </li>
+                <li><strong>finishVerify() helper</strong> - Audit and alerting:
+                    <ul>
+                        <li>Saves all decisions to MongoDB audit log</li>
+                        <li>For DENY verdicts: publishes alert to Kafka asynchronously</li>
+                        <li>Handles errors gracefully without affecting verdict</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>The critical business logic engine. Makes the fundamental allow/deny decision by orchestrating validation and authorization checks. Ensures all decisions are logged for compliance and triggers real-time alerts for security violations.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/service/validator.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Input schema validation to prevent malformed or malicious requests</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>VerifyRequestSchema</strong> struct with validation tags:
+                    <ul>
+                        <li><code>Path</code>:
+                            <ul>
+                                <li><code>required</code> - Must be present</li>
+                                <li><code>min=1,max=2048</code> - Length constraints</li>
+                                <li><code>startswith=/</code> - Must begin with forward slash</li>
+                            </ul>
+                        </li>
+                        <li><code>Method</code>:
+                            <ul>
+                                <li><code>required</code> - Must be present</li>
+                                <li><code>oneof=GET POST PUT PATCH DELETE HEAD OPTIONS</code> - Whitelist of valid methods</li>
+                            </ul>
+                        </li>
+                        <li><code>ClientIP</code>:
+                            <ul>
+                                <li><code>required</code> - Must be present</li>
+                                <li><code>ip</code> - Must be valid IPv4 or IPv6 address</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Custom validator:</strong> Registers <code>startswith</code> validation function</li>
+                <li><strong>ValidateRequest()</strong> - Validates proto VerifyRequest against schema</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>First line of defense against malformed inputs. Uses declarative validation rules to reject invalid requests before they reach core logic. Provides detailed validation error messages. Uses the industry-standard <code>validator/v10</code> library.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/service/rbac.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Role-Based Access Control (RBAC) and object-level authorization policies</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>RBACChecker interface</strong> - Defines authorization contract:
+                    <ul>
+                        <li><code>CanAccess(userID, roles, resourcePath, method) → (allowed, reason)</code></li>
+                    </ul>
+                </li>
+                <li><strong>DefaultRBAC</strong> - Implementation with three role-based rules:
+                    <ul>
+                        <li><strong>Anonymous role:</strong> Access to <code>/api/public/*</code> and <code>/health</code></li>
+                        <li><strong>Admin role:</strong> Access to <code>/admin/*</code> and <code>/users/*</code></li>
+                        <li><strong>User role:</strong> 
+                            <ul>
+                                <li>Access to <code>/api/*</code></li>
+                                <li>Object-level: Can only access own profile at <code>/users/{own_id}</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Helper functions:</strong>
+                    <ul>
+                        <li><code>normalizePath()</code> - Standardizes path format</li>
+                        <li><code>extractResourceID()</code> - Parses ID from path for object-level checks</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Implements authorization policies. Determines which users with which roles can access which resources. Supports both role-based access (coarse-grained) and object-level access control (fine-grained). Can be extended with different RBAC implementations.</p>
+        </div>
+
+        <h3>4.3 Persistence Layer</h3>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/store/mongo.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>MongoDB persistence layer for audit logging</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>LogEntry</strong> struct - BSON model for audit logs:
+                    <ul>
+                        <li><code>path</code>, <code>method</code>, <code>client_ip</code> - Request details</li>
+                        <li><code>verdict</code>, <code>reason</code> - Decision and explanation</li>
+                        <li><code>timestamp</code> - When decision was made (UTC)</li>
+                    </ul>
+                </li>
+                <li><strong>Store interface</strong> - Defines persistence contract</li>
+                <li><strong>MongoStore implementation:</strong>
+                    <ul>
+                        <li>Wraps MongoDB client and collection references</li>
+                        <li><code>NewMongoStore()</code> constructor:
+                            <ul>
+                                <li>Connects to MongoDB using URI</li>
+                                <li>Pings server to verify connectivity</li>
+                                <li>Gets or creates database and collection</li>
+                                <li>Includes comprehensive logging at each step</li>
+                            </ul>
+                        </li>
+                        <li><code>SaveLog()</code> method:
+                            <ul>
+                                <li>Converts request/response to LogEntry</li>
+                                <li>Inserts into <code>security_logs</code> collection</li>
+                                <li>Used for audit trail and forensic analysis</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Provides durable storage of all security decisions. Creates an immutable audit trail for compliance, forensics, and security analysis. Every verification decision is logged regardless of outcome. Essential for post-incident investigation.</p>
+        </div>
+
+        <h3>4.4 Middleware - Interceptors</h3>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/interceptor/metadata.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>gRPC middleware for secure metadata extraction and context injection</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>Context keys:</strong> Typed context keys for type-safe context values</li>
+                <li><strong>Metadata constants:</strong>
+                    <ul>
+                        <li><code>x-client-ip</code> - Client IP header</li>
+                        <li><code>x-user-id</code> - User ID header</li>
+                        <li><code>x-roles</code> - Comma-separated roles header</li>
+                    </ul>
+                </li>
+                <li><strong>MetadataInterceptor()</strong> - gRPC unary interceptor that:
+                    <ul>
+                        <li>Extracts metadata from gRPC call headers</li>
+                        <li>Sanitizes values to prevent injection attacks</li>
+                        <li>Parses comma-separated roles into []string</li>
+                        <li>Injects values into context for downstream handlers</li>
+                    </ul>
+                </li>
+                <li><strong>Context accessors:</strong>
+                    <ul>
+                        <li><code>ClientIPFromContext()</code></li>
+                        <li><code>UserIDFromContext()</code></li>
+                        <li><code>RolesFromContext()</code></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Security-critical middleware. Extracts untrusted metadata from gRPC headers, sanitizes it to prevent injection attacks, and makes it available to downstream handlers via context. Acts as a trust boundary - validates and cleans external input before it's used in authorization decisions.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 internal/interceptor/ratelimit.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Per-client-IP rate limiting middleware to prevent denial-of-service attacks</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>RateLimitConfig</strong> struct:
+                    <ul>
+                        <li><code>RPS</code> (requests per second) - Token bucket refill rate</li>
+                        <li><code>Burst</code> - Token bucket capacity</li>
+                    </ul>
+                </li>
+                <li><strong>DefaultRateLimitConfig()</strong> - Sensible defaults:
+                    <ul>
+                        <li>10 requests/second sustained rate</li>
+                        <li>20 request burst capacity</li>
+                    </ul>
+                </li>
+                <li><strong>rateLimiter</strong> - Token bucket implementation:
+                    <ul>
+                        <li><code>limiters</code> - sync.Map for per-IP limiters</li>
+                        <li><code>getLimiter(ip)</code> - Creates or retrieves limiter for IP address</li>
+                    </ul>
+                </li>
+                <li><strong>NewRateLimitInterceptor()</strong> - gRPC unary interceptor that:
+                    <ul>
+                        <li>Extracts client IP from context or gRPC peer</li>
+                        <li>Checks if request is allowed under token bucket limits</li>
+                        <li>Returns gRPC <code>ResourceExhausted</code> error if rate limit exceeded</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>DoS protection middleware. Implements per-client-IP token bucket rate limiting. Prevents single misbehaving clients from exhausting system resources or starving legitimate traffic. Uses thread-safe concurrent map for scalability.</p>
+        </div>
+
+        <!-- PKG DIRECTORY -->
+        <h2>5. pkg/ Directory - Reusable Utilities</h2>
+        <p>Contains general-purpose packages that could potentially be reused in other projects.</p>
+
+        <div class="file-section">
+            <div class="file-path">📄 pkg/crypto/argon2.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Secure password/secret hashing using Argon2id algorithm</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>Argon2id parameters (hardened):</strong>
+                    <ul>
+                        <li>Time: 1 iteration (minimal, suitable for login paths)</li>
+                        <li>Memory: 64MB - High memory cost resists GPU/ASIC attacks</li>
+                        <li>Parallelism: 4 threads</li>
+                        <li>Key length: 32 bytes (256 bits)</li>
+                        <li>Salt length: 16 bytes (128 bits random)</li>
+                    </ul>
+                </li>
+                <li><strong>HashSecret(secret []byte)</strong> - Hashing function:
+                    <ul>
+                        <li>Generates cryptographically random salt</li>
+                        <li>Computes Argon2id hash with salt</li>
+                        <li>Encodes result in standard format: <code>$argon2id$v=19$m=65536,t=1,p=4$&lt;salt_b64&gt;$&lt;hash_b64&gt;</code></li>
+                    </ul>
+                </li>
+                <li><strong>VerifySecret(secret, encodedHash)</strong> - Verification function:
+                    <ul>
+                        <li>Decodes stored hash to extract salt and parameters</li>
+                        <li>Recomputes hash with provided secret and stored salt</li>
+                        <li>Uses constant-time comparison to prevent timing attacks</li>
+                    </ul>
+                </li>
+                <li><strong>decodeHash()</strong> - Hash format parser</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Provides secure credential storage. Argon2id is the current OWASP-recommended password hashing algorithm, resistant to GPU and ASIC attacks. Used for storing API keys, service credentials, and user passwords. The constant-time comparison prevents attackers from using timing analysis to guess correct hashes.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 pkg/kafka/producer.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Kafka producer for publishing real-time security alert events</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>AlertRecord</strong> struct - Alert message payload:
+                    <ul>
+                        <li><code>path</code>, <code>method</code>, <code>client_ip</code> - Request details</li>
+                        <li><code>verdict</code>, <code>reason</code> - Decision and explanation</li>
+                        <li><code>timestamp</code> - When alert was generated (UTC)</li>
+                        <li>Serializes to JSON automatically</li>
+                    </ul>
+                </li>
+                <li><strong>Producer</strong> struct - Thread-safe Kafka wrapper:
+                    <ul>
+                        <li>Wraps franz-go client</li>
+                        <li><code>NewProducer(brokers []string)</code> - Constructor</li>
+                        <li><code>PublishAlert(ctx, record)</code> - Synchronous publish with error handling</li>
+                        <li><code>Close()</code> - Graceful shutdown</li>
+                    </ul>
+                </li>
+                <li><strong>Topic:</strong> <code>security-alerts</code> - Kafka topic for all alert events</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Decouples security verification from alert processing. Asynchronously publishes denial events to Kafka where other systems can subscribe and react (SIEM ingestion, incident response automation, real-time dashboards). Enables scalable event-driven security operations.</p>
+        </div>
+
+        <div class="file-section">
+            <div class="file-path">📄 pkg/sanitize/sanitize.go</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Input sanitization to prevent injection attacks</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li><strong>injectionPattern regex</strong> - Detects common injection attack prefixes:
+                    <ul>
+                        <li><code>$</code>, <code>{}</code>, <code>\</code>, <code>"</code> - MongoDB/SQL operator characters</li>
+                    </ul>
+                </li>
+                <li><strong>Metadata(value string)</strong> - Sanitization function applying three defenses:
+                    <ul>
+                        <li><strong>Pattern rejection:</strong> Rejects values matching injection pattern → returns empty string</li>
+                        <li><strong>Character filtering:</strong> Removes control characters (0x00-0x1F, 0x7F)</li>
+                        <li><strong>Length truncation:</strong> Limits to 256 characters maximum</li>
+                    </ul>
+                </li>
+                <li><strong>Defense-in-depth approach:</strong> Multiple layers ensure that even if one is bypassed, others catch attacks</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Defense-in-depth sanitization. Provides multiple layers of protection (pattern detection, character filtering, truncation) against injection attacks in metadata. Applied to all gRPC metadata before use in authorization decisions. Particularly effective against NoSQL/MongoDB injection.</p>
+        </div>
+
+        <!-- CONFIG DIRECTORY -->
+        <h2>6. config/ Directory</h2>
+
+        <div class="file-section">
+            <div class="file-path">📄 config/.gitkeep</div>
+            <div class="file-purpose">Purpose:</div>
+            <p>Git placeholder file to preserve empty directory</p>
+            <div class="file-contains">Contains:</div>
+            <ul>
+                <li>Empty file (0 bytes)</li>
+            </ul>
+            <div class="file-role">Role:</div>
+            <p>Ensures the <code>config/</code> directory exists in Git despite being empty. Used for storing deployment-specific configuration files such as environment-specific settings, TLS certificates, service account keys, and other secrets that should NOT be committed to version control.</p>
+        </div>
+
+        <!-- ARCHITECTURE SECTION -->
+        <h2>7. System Architecture & Data Flow</h2>
+
+        <h3>7.1 Layered Architecture Diagram</h3>
+        <div class="architecture">
+┌─────────────────────────────────────────────────────────────────┐
+│                        HTTP Client                              │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ HTTP Request
+                           ↓
+        ┌──────────────────────────────────────────┐
+        │     HTTP Gateway (FUTURE)                │
+        │ Receives HTTP requests                   │
+        │ Port 80/443 (TLS)                        │
+        └──────────────────┬───────────────────────┘
+                           │ gRPC Verify()
+                           ↓
+┌──────────────────────────────────────────────────────────────────┐
+│            SECURITY SERVICE (gRPC Port 50051)                   │
+│                                                                  │
+│ ┌───────────────────────────────────────────────────────────┐  │
+│ │ Middleware Layer                                          │  │
+│ │ ┌────────────────────────────────────────────────────┐   │  │
+│ │ │ MetadataInterceptor                               │   │  │
+│ │ │ • Extract x-client-ip, x-user-id, x-roles        │   │  │
+│ │ │ • Sanitize values (prevent injection)            │   │  │
+│ │ │ • Inject into context                            │   │  │
+│ │ └────────────────────────────────────────────────────┘   │  │
+│ │ ┌────────────────────────────────────────────────────┐   │  │
+│ │ │ RateLimitInterceptor                              │   │  │
+│ │ │ • Per-client-IP token bucket rate limiting       │   │  │
+│ │ │ • Reject if quota exceeded (ResourceExhausted)   │   │  │
+│ │ └────────────────────────────────────────────────────┘   │  │
+│ └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│ ┌───────────────────────────────────────────────────────────┐  │
+│ │ Handler Layer (gRPC Adapter)                              │  │
+│ │ • SecurityGRPCHandler implements SecurityServiceServer   │  │
+│ │ • Delegates to SecurityService                           │  │
+│ └──────────────────┬──────────────────────────────────────┘   │
+│                    │                                            │
+│ ┌──────────────────▼──────────────────────────────────────┐   │
+│ │ Service Layer (Business Logic)                          │  │
+│ │                                                         │  │
+│ │ 1. VALIDATION                                          │  │
+│ │    • Path format (must start with /)                   │  │
+│ │    • Method whitelist (GET, POST, etc.)               │  │
+│ │    • IP address valid (IPv4/IPv6)                      │  │
+│ │    │                                                   │  │
+│ │    ├─ FAIL → DENY with validation error              │  │
+│ │    │                                                   │  │
+│ │ 2. AUTHORIZATION                                       │  │
+│ │    • Extract userID and roles from context            │  │
+│ │    • Check RBAC rules:                                │  │
+│ │      - Anonymous: /api/public/*, /health             │  │
+│ │      - User: /api/*, /users/{own_id}                 │  │
+│ │      - Admin: /admin/*, /users/*                     │  │
+│ │    │                                                   │  │
+│ │    ├─ FAIL → DENY with RBAC reason                    │  │
+│ │    │                                                   │  │
+│ │ 3. DEFAULT ACTION: ALLOW if both checks pass          │  │
+│ │                                                         │  │
+│ │ 4. FINALIZE                                            │  │
+│ │    • Log verdict to MongoDB                            │  │
+│ │    • If DENY: Publish alert to Kafka (async)          │  │
+│ └──────────────────┬──────────────────────────────────────┘  │
+│                    │                                            │
+└────────┬───────────┼───────────────────────┬──────────────────┘
+         │           │                       │
+         ↓           ↓                       ↓
+    ┌────────┐  ┌─────────────┐        ┌────────────┐
+    │ MongoDB│  │   Kafka     │        │  Gateway   │
+    │        │  │  security-  │        │  Response: │
+    │ DB:    │  │   alerts    │        │ ALLOW/DENY │
+    │ api_   │  │   topic     │        └────────────┘
+    │protect │  └─────────────┘             │
+    │ ion    │        │                     ↓
+    │        │        ↓             ┌──────────────────┐
+    │ Coll:  │  ┌──────────────┐   │ Forward request  │
+    │security│  │ SIEM systems │   │ to backend app   │
+    │_logs   │  │ Dashboards   │   │ (if ALLOW)       │
+    │        │  │ Incident     │   │                  │
+    │        │  │ Response     │   │ Block request    │
+    │ Audit  │  │ Automation   │   │ (if DENY)        │
+    │ Trail  │  └──────────────┘   └──────────────────┘
+    └────────┘
+        </div>
+
+        <h3>7.2 Request Processing Flow</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Component</th>
+                    <th>Action</th>
+                    <th>Decision</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Receive</td>
+                    <td>gRPC Server</td>
+                    <td>Accept VerifyRequest</td>
+                    <td>Continue</td>
+                </tr>
+                <tr>
+                    <td>2. Metadata Extract</td>
+                    <td>MetadataInterceptor</td>
+                    <td>Extract & sanitize headers</td>
+                    <td>Continue</td>
+                </tr>
+                <tr>
+                    <td>3. Rate Limit</td>
+                    <td>RateLimitInterceptor</td>
+                    <td>Check token bucket per IP</td>
+                    <td>ALLOW or ResourceExhausted</td>
+                </tr>
+                <tr>
+                    <td>4. Validate Input</td>
+                    <td>ValidateRequest()</td>
+                    <td>Check path, method, IP format</td>
+                    <td>DENY (validation error) or Continue</td>
+                </tr>
+                <tr>
+                    <td>5. Check RBAC</td>
+                    <td>DefaultRBAC</td>
+                    <td>Verify user roles grant access</td>
+                    <td>DENY (no access) or ALLOW</td>
+                </tr>
+                <tr>
+                    <td>6. Log Decision</td>
+                    <td>MongoStore.SaveLog()</td>
+                    <td>Insert audit record</td>
+                    <td>Continue</td>
+                </tr>
+                <tr>
+                    <td>7. Alert (if DENY)</td>
+                    <td>Kafka.PublishAlert()</td>
+                    <td>Publish to security-alerts topic</td>
+                    <td>Async</td>
+                </tr>
+                <tr>
+                    <td>8. Return</td>
+                    <td>gRPC Server</td>
+                    <td>Send VerifyResponse</td>
+                    <td>ALLOW or DENY</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- KEY FEATURES TABLE -->
+        <h2>8. Feature Matrix - Security Capabilities</h2>
+        <table class="feature-table">
+            <thead>
+                <tr>
+                    <th>Security Feature</th>
+                    <th>Implementation File</th>
+                    <th>Threat Model</th>
+                    <th>Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Input Validation</td>
+                    <td><code>internal/service/validator.go</code></td>
+                    <td>Malformed requests, fuzzing attacks</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+                <tr>
+                    <td>Injection Prevention</td>
+                    <td><code>pkg/sanitize/sanitize.go</code></td>
+                    <td>NoSQL/SQL injection, command injection</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+                <tr>
+                    <td>RBAC (Role-Based Access Control)</td>
+                    <td><code>internal/service/rbac.go</code></td>
+                    <td>Unauthorized access, privilege escalation</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+                <tr>
+                    <td>Object-Level Authorization</td>
+                    <td><code>internal/service/rbac.go</code></td>
+                    <td>Cross-user data access, IDOR vulnerabilities</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+                <tr>
+                    <td>Metadata Sanitization</td>
+                    <td><code>internal/interceptor/metadata.go</code></td>
+                    <td>Header-based injection attacks</td>
+                    <td><span class="impact-medium">MEDIUM</span></td>
+                </tr>
+                <tr>
+                    <td>Rate Limiting</td>
+                    <td><code>internal/interceptor/ratelimit.go</code></td>
+                    <td>Denial-of-Service (DoS), brute force attacks</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+                <tr>
+                    <td>Audit Logging</td>
+                    <td><code>internal/store/mongo.go</code></td>
+                    <td>Compliance, forensic analysis, intrusion detection</td>
+                    <td><span class="impact-medium">MEDIUM</span></td>
+                </tr>
+                <tr>
+                    <td>Real-Time Alerting</td>
+                    <td><code>pkg/kafka/producer.go</code></td>
+                    <td>Delayed incident response, missed attacks</td>
+                    <td><span class="impact-medium">MEDIUM</span></td>
+                </tr>
+                <tr>
+                    <td>Argon2id Password Hashing</td>
+                    <td><code>pkg/crypto/argon2.go</code></td>
+                    <td>Credential compromise, rainbow tables</td>
+                    <td><span class="impact-high">HIGH</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- DEPENDENCIES AND INTERACTIONS -->
+        <h2>9. Dependency & Component Interactions</h2>
+
+        <h3>9.1 Dependency Injection Wiring</h3>
+        <p>The security service follows explicit dependency injection for testability and loose coupling:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Dependencies</th>
+                    <th>Injected By</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>SecurityService</code></td>
+                    <td>Store, AlertPublisher, RBACChecker</td>
+                    <td><code>cmd/security-service/main.go</code></td>
+                </tr>
+                <tr>
+                    <td><code>SecurityGRPCHandler</code></td>
+                    <td>SecurityService</td>
+                    <td><code>cmd/security-service/main.go</code></td>
+                </tr>
+                <tr>
+                    <td><code>MongoStore</code></td>
+                    <td>MongoDB connection</td>
+                    <td><code>cmd/security-service/main.go</code></td>
+                </tr>
+                <tr>
+                    <td><code>Kafka Producer</code></td>
+                    <td>Broker addresses</td>
+                    <td><code>cmd/security-service/main.go</code></td>
+                </tr>
+                <tr>
+                    <td><code>Interceptors</code></td>
+                    <td>Config (RateLimitConfig)</td>
+                    <td><code>cmd/security-service/main.go</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>9.2 External System Dependencies</h3>
+        <ul>
+            <li><strong>MongoDB:</strong> Audit log storage
+                <ul>
+                    <li>Connection: URI from <code>MONGODB_URI</code> env var</li>
+                    <li>Database: Name from <code>MONGODB_DB</code> env var</li>
+                    <li>Collection: <code>security_logs</code> (auto-created)</li>
+                </ul>
+            </li>
+            <li><strong>Kafka:</strong> Real-time alert publishing
+                <ul>
+                    <li>Brokers: Comma-separated addresses from <code>KAFKA_BROKERS</code> env var</li>
+                    <li>Topic: <code>security-alerts</code> (auto-created)</li>
+                </ul>
+            </li>
+            <li><strong>HTTP Gateway:</strong> Receives security decisions
+                <ul>
+                    <li>Calls gRPC on localhost:50051</li>
+                    <li>Forwards ALLOW verdicts to backend</li>
+                    <li>Blocks DENY verdicts</li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- DEPLOYMENT NOTES -->
+        <h2>10. Deployment & Configuration</h2>
+
+        <h3>10.1 Environment Variables</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Purpose</th>
+                    <th>Default</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>MONGODB_URI</code></td>
+                    <td>MongoDB connection string</td>
+                    <td><code>mongodb://localhost:27017</code></td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><code>MONGODB_DB</code></td>
+                    <td>Database name for audit logs</td>
+                    <td><code>api_protection</code></td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><code>KAFKA_BROKERS</code></td>
+                    <td>Comma-separated Kafka broker addresses</td>
+                    <td><code>localhost:9092</code></td>
+                    <td>No</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>10.2 Service Startup Checklist</h3>
+        <ul>
+            <li>✅ MongoDB running and accessible at <code>MONGODB_URI</code></li>
+            <li>✅ Kafka running and accessible at <code>KAFKA_BROKERS</code></li>
+            <li>✅ All Go dependencies installed (<code>go mod download</code>)</li>
+            <li>✅ gRPC code generated (<code>buf generate proto</code>)</li>
+            <li>✅ Environment variables set</li>
+            <li>✅ Port 50051 available and not blocked by firewall</li>
+            <li>✅ MongoDB user with appropriate permissions (if using authentication)</li>
+            <li>✅ Kafka topics auto-create or pre-created</li>
+        </ul>
+
+        <!-- SUMMARY TABLE -->
+        <h2>11. Quick Reference - File Summary Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Type</th>
+                    <th>Purpose (1-line)</th>
+                    <th>Critical?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>go.mod</code></td>
+                    <td>Config</td>
+                    <td>Go dependencies and versions</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>README.md</code></td>
+                    <td>Docs</td>
+                    <td>Project overview and getting started</td>
+                    <td>📚 Helpful</td>
+                </tr>
+                <tr>
+                    <td><code>buf.gen.yaml</code></td>
+                    <td>Config</td>
+                    <td>Protocol buffer code generation config</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>proto/security.proto</code></td>
+                    <td>Proto</td>
+                    <td>gRPC API contract definition</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>cmd/security-service/main.go</code></td>
+                    <td>Entrypoint</td>
+                    <td>Security service bootstrap and initialization</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>cmd/gateway/main.go</code></td>
+                    <td>Entrypoint</td>
+                    <td>HTTP gateway entry point (WIP)</td>
+                    <td>⏳ Future</td>
+                </tr>
+                <tr>
+                    <td><code>cmd/test-client/main.go</code></td>
+                    <td>Tool</td>
+                    <td>Automated test harness for authorization</td>
+                    <td>🧪 Testing</td>
+                </tr>
+                <tr>
+                    <td><code>internal/handler/grpc.go</code></td>
+                    <td>Handler</td>
+                    <td>gRPC server implementation</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/service/security.go</code></td>
+                    <td>Service</td>
+                    <td>Core verification logic and orchestration</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/service/validator.go</code></td>
+                    <td>Service</td>
+                    <td>Input schema validation</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/service/rbac.go</code></td>
+                    <td>Service</td>
+                    <td>RBAC and authorization policies</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/store/mongo.go</code></td>
+                    <td>Store</td>
+                    <td>MongoDB audit logging persistence</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/interceptor/metadata.go</code></td>
+                    <td>Middleware</td>
+                    <td>gRPC metadata extraction and sanitization</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>internal/interceptor/ratelimit.go</code></td>
+                    <td>Middleware</td>
+                    <td>Per-IP rate limiting middleware</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>pkg/crypto/argon2.go</code></td>
+                    <td>Utility</td>
+                    <td>Argon2id password hashing</td>
+                    <td>📦 Optional</td>
+                </tr>
+                <tr>
+                    <td><code>pkg/kafka/producer.go</code></td>
+                    <td>Utility</td>
+                    <td>Kafka alert publishing</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><code>pkg/sanitize/sanitize.go</code></td>
+                    <td>Utility</td>
+                    <td>Input sanitization and injection prevention</td>
+                    <td>✅ Yes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>API Protection Service - Complete File Documentation</strong></p>
+            <p>Generated: March 25, 2026 | For questions or updates, refer to README.md</p>
+            <p style="margin-top: 20px; font-size: 0.85em;">
+                <strong>How to Print to PDF:</strong><br>
+                Press Ctrl+P (Windows) or Cmd+P (Mac) → Select "Save as PDF" → Choose location and filename
+            </p>
+        </div>
+    </div>
+</body>
+</html>

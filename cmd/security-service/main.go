@@ -17,8 +17,9 @@ import (
 	"api-protection/pkg/kafka"
 	pb "api-protection/proto/genProto"
 
-	"google.golang.org/grpc"
 	"golang.org/x/time/rate"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func getEnv(key, defaultVal string) string {
@@ -38,13 +39,22 @@ func main() {
 		kafkaBrokers[i] = strings.TrimSpace(b)
 	}
 
+	log.Printf("📡 Attempting to connect to MongoDB...")
+	log.Printf("   URI: %s", mongoURI)
+	log.Printf("   Database: %s", mongoDB)
+
 	mongoStore, err := store.NewMongoStore(ctx, mongoURI, mongoDB)
 	if err != nil {
-		log.Fatalf("failed to connect to MongoDB: %v", err)
+		log.Fatalf("❌ Failed to connect to MongoDB: %v", err)
 	}
+	log.Printf("✅ Successfully connected to MongoDB")
+	log.Printf("✅ Database '%s' and collection 'security_logs' initialized", mongoDB)
+
 	defer func() {
 		if err := mongoStore.Close(context.Background()); err != nil {
-			log.Printf("mongo close: %v", err)
+			log.Printf("⚠️  MongoDB close error: %v", err)
+		} else {
+			log.Printf("✅ MongoDB connection closed successfully")
 		}
 	}()
 
@@ -82,8 +92,10 @@ func main() {
 
 	grpcServer := grpc.NewServer(chain)
 	pb.RegisterSecurityServiceServer(grpcServer, h)
+	reflection.Register(grpcServer)
 
-	log.Println("Security Service listening on :50051")
+	log.Println("✅ Security Service listening on :50051")
+	log.Println("✅ gRPC Reflection enabled (Postman compatible)")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("grpc serve: %v", err)
 	}

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Protection Service - Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #0284c7 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 80px;
+            position: absolute;
+            animation: fadeIn 0.5s;
+            background: white;
+            overflow-y: auto;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Slide styles */
+        .slide-title {
+            text-align: center;
+        }
+
+        .slide-title h1 {
+            font-size: 3.5em;
+            color: #1e40af;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.8em;
+            color: #0284c7;
+            margin-bottom: 40px;
+        }
+
+        .slide-title .tagline {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 60px;
+        }
+
+        .slide-content h2 {
+            font-size: 2.5em;
+            color: #1e40af;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #0284c7;
+            padding-bottom: 20px;
+        }
+
+        .slide-content h3 {
+            font-size: 1.5em;
+            color: #0284c7;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content p {
+            font-size: 1.1em;
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .slide-content ul {
+            font-size: 1.1em;
+            color: #444;
+            margin-left: 40px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .slide-content li {
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            color: #1e40af;
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .feature-box {
+            background: #f0f9ff;
+            border-left: 4px solid #0284c7;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .feature-box h4 {
+            color: #1e40af;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .feature-box p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        .architecture-box {
+            background: #f0fdf4;
+            border: 2px solid #16a34a;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .tech-item strong {
+            color: #1e40af;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .tech-item p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+        }
+
+        .comparison-table th {
+            background: #1e40af;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            background: #f9fafb;
+        }
+
+        .comparison-table tr:nth-child(even) td {
+            background: #f3f4f6;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #0284c7;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .timeline-item strong {
+            display: block;
+            color: #1e40af;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        button {
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2,132,199,0.4);
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(30,64,175,0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #1e40af 0%, #0284c7 100%);
+            color: white;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 4em;
+        }
+
+        .title-slide .subtitle {
+            color: #e0f2fe;
+            font-size: 2em;
+        }
+
+        .title-slide .tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3em;
+        }
+
+        .benefit-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fef08a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .benefit-box strong {
+            color: #8b5000;
+            font-size: 1.1em;
+        }
+
+        .benefit-box p {
+            color: #744210;
+            margin: 0;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #dcfce7 0%, #ccfbf1 100%);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .success-box strong {
+            color: #065f46;
+            font-size: 1.1em;
+        }
+
+        .success-box p {
+            color: #065f46;
+            margin: 0;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #1f2937;
+        }
+
+        @media print {
+            body { background: white; }
+            .controls, .slide-number { display: none; }
+            .slide { page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div style="text-align: center;">
+                <h1>🛡️ API Protection Service</h1>
+                <p class="subtitle">Real-time Malicious Traffic Detection & Blocking</p>
+                <p class="tagline">A production-grade gRPC microservice implementing OWASP Top 10 security controls</p>
+                <p style="margin-top: 80px; font-size: 1.1em;">Built with Go • MongoDB • Kafka • gRPC</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Problem Statement -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🔴 The Problem</h2>
+                <p>Modern APIs face sophisticated threats daily:</p>
+                <ul>
+                    <li><strong>Injection attacks:</strong> SQL/NoSQL exploits targeting backend data</li>
+                    <li><strong>Unauthorized access:</strong> Users accessing resources they shouldn't</li>
+                    <li><strong>Rate-based attacks:</strong> DDoS and credential stuffing attempts</li>
+                    <li><strong>Privilege escalation:</strong> Attackers gaining admin-level access</li>
+                    <li><strong>Compliance violations:</strong> Unlogged security events for audit trails</li>
+                </ul>
+                <p style="margin-top: 40px; font-size: 1.2em; color: #0284c7;">
+                    <strong>Solution:</strong> A dedicated security service that validates, authorizes, and logs every request before it reaches your backend.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Solution Overview -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>✅ The Solution</h2>
+                <p>API Protection Service: A gRPC-based security decision engine</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h4>🔍 Input Validation</h4>
+                        <p>Strict schema validation on all incoming requests before processing</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>🚫 Injection Prevention</h4>
+                        <p>Multi-layer defense against NoSQL/SQL injection and command injection</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>👥 RBAC</h4>
+                        <p>Role-based access control with support for object-level authorization</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>⏱️ Rate Limiting</h4>
+                        <p>Per-client-IP token bucket limiting to prevent DoS attacks</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px;"><strong>Result:</strong> All requests verified before reaching your backend. DENY verdicts logged and alerted in real-time.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Architecture -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🏗️ System Architecture</h2>
+                <div class="architecture-box">┌─────────────────────────────────────────────┐
+│           HTTP Client Request               │
+└──────────────────┬──────────────────────────┘
+                   │
+                   ↓
+        ┌──────────────────────────┐
+        │   HTTP Gateway           │
+        │ (receives HTTP request)  │
+        └──────────────┬───────────┘
+                       │ gRPC Verify()
+                       ↓
+    ┌─────────────────────────────────────┐
+    │   SECURITY SERVICE (Port 50051)     │
+    │  ┌───────────────────────────────┐  │
+    │  │ Validation Layer              │  │
+    │  │ • Path format, method, IP     │  │
+    │  └───────────────────────────────┘  │
+    │  ┌───────────────────────────────┐  │
+    │  │ Authorization Layer           │  │
+    │  │ • RBAC + object-level checks  │  │
+    │  └───────────────────────────────┘  │
+    │  ┌───────────────────────────────┐  │
+    │  │ Persistence & Alerts          │  │
+    │  │ • MongoDB logs, Kafka alerts  │  │
+    │  └───────────────────────────────┘  │
+    └───────────────┬─────────────────────┘
+                    │
+        ┌───────────┴────────────┐
+        ↓                        ↓
+    ┌─────────┐          ┌─────────────┐
+    │ MongoDB │          │ Kafka Topic │
+    │ Logs    │          │ Alerts      │
+    └─────────┘          └─────────────┘</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Tech Stack -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>⚙️ Technology Stack</h2>
+                
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <strong>Backend</strong>
+                        <p>Go 1.26.1<br/>Type-safe, high-performance</p>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Communication</strong>
+                        <p>gRPC<br/>Fast binary protocol</p>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Serialization</strong>
+                        <p>Protocol Buffers<br/>Compact & efficient</p>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Database</strong>
+                        <p>MongoDB<br/>Audit logs storage</p>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Messaging</strong>
+                        <p>Apache Kafka<br/>Real-time alerts</p>
+                    </div>
+                    <div class="tech-item">
+                        <strong>Security</strong>
+                        <p>Argon2id<br/>Password hashing</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px;"><strong>Dependencies:</strong> validator/v10 (input validation), franz-go (Kafka client), mongo-driver (MongoDB client), golang.org/x/crypto (cryptography)</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Security Layers -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🔐 Layered Security Defense</h2>
+                
+                <div style="background: #f0f9ff; padding: 30px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #1e40af;">Layer 1: Input Validation</h3>
+                    <p>Validates path format (must start with /), HTTP method whitelist, IP address format</p>
+                </div>
+
+                <div style="background: #fef3c7; padding: 30px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #8b5000;">Layer 2: Injection Prevention</h3>
+                    <p>Multi-defense: pattern detection, control character removal, length truncation</p>
+                </div>
+
+                <div style="background: #dbeafe; padding: 30px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #1e40af;">Layer 3: Authorization (RBAC)</h3>
+                    <p>Role-based access control: Anonymous → /api/public/*, User → /api/*, Admin → /admin/*</p>
+                </div>
+
+                <div style="background: #dcfce7; padding: 30px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #065f46;">Layer 4: Rate Limiting</h3>
+                    <p>Per-client-IP token bucket (10 req/s, burst 20) prevents DoS attacks</p>
+                </div>
+
+                <p style="margin-top: 30px; text-align: center; font-weight: bold; color: #1e40af;">Defense-in-depth: Even if one layer is bypassed, others provide protection</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: RBAC & Authorization -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>👥 RBAC Rules & Authorization</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Allowed Paths</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Anonymous</strong></td>
+                            <td>/api/public/*, /health</td>
+                            <td>GET /api/public/docs → ALLOW</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User</strong></td>
+                            <td>/api/*, /users/{own_id}</td>
+                            <td>GET /api/users → ALLOW<br/>GET /users/42 (owner) → ALLOW</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Admin</strong></td>
+                            <td>/admin/*, /users/*</td>
+                            <td>GET /admin/dashboard → ALLOW</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Object-Level Authorization</h3>
+                <p>Even with User role, users can only access their own resources:</p>
+                <ul>
+                    <li>✅ <code>GET /users/42</code> with <code>x-user-id: 42</code> → ALLOW</li>
+                    <li>❌ <code>GET /users/99</code> with <code>x-user-id: 42</code> → DENY</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Data Flow -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📊 Request Processing Flow</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>1. Accept Request</strong>
+                        <p>gRPC server receives VerifyRequest with path, method, client_ip</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>2. Extract Metadata</strong>
+                        <p>MetadataInterceptor extracts x-roles, x-user-id, x-client-ip from headers</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>3. Rate Limit Check</strong>
+                        <p>RateLimitInterceptor checks token bucket per client IP</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>4. Validate Input</strong>
+                        <p>ValidateRequest checks schema: path format, method whitelist, IP validity</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>5. Check RBAC</strong>
+                        <p>DefaultRBAC verifies user roles grant access to resource</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>6. Log Decision</strong>
+                        <p>MongoStore saves verdict, reason, timestamp to audit trail</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>7. Alert (if DENY)</strong>
+                        <p>Kafka.PublishAlert sends real-time violation to security-alerts topic</p>
+                    </div>
+                    <div class="timeline-item">
+                        <strong>8. Return Verdict</strong>
+                        <p>VerifyResponse with ALLOW/DENY verdict and reason</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Testing & Validation -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🧪 Testing & Validation</h2>
+                
+                <h3>Test Methods</h3>
+                <ul>
+                    <li><strong>CLI Test Client:</strong> <code>go run ./cmd/test-client</code> - Automated 5-scenario verification</li>
+                    <li><strong>Postman gRPC:</strong> Interactive testing with gRPC reflection enabled</li>
+                </ul>
+
+                <h3>Core Test Cases</h3>
+                <ul>
+                    <li>Public endpoint access (anonymous) → ALLOW</li>
+                    <li>Health check endpoint → ALLOW</li>
+                    <li>Users endpoint without role → DENY</li>
+                    <li>Users endpoint with user role → ALLOW</li>
+                    <li>Admin endpoint with admin role → ALLOW</li>
+                    <li>Object-level access (own resource) → ALLOW</li>
+                    <li>Object-level access (other user) → DENY</li>
+                </ul>
+
+                <h3>Validation Error Cases</h3>
+                <ul>
+                    <li>Invalid path format (missing leading /) → DENY + validation error</li>
+                    <li>Invalid HTTP method → DENY + validation error</li>
+                    <li>Invalid IP address → DENY + validation error</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 10: Deployment -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🚀 Deployment & Configuration</h2>
+                
+                <h3>Environment Variables</h3>
+                <ul>
+                    <li><code>MONGODB_URI</code> - MongoDB connection (default: mongodb://localhost:27017)</li>
+                    <li><code>MONGODB_DB</code> - Database name (default: api_protection)</li>
+                    <li><code>KAFKA_BROKERS</code> - Kafka brokers (default: localhost:9092)</li>
+                    <li><code>RATE_LIMIT_RPS</code> - Requests per second (default: 10)</li>
+                    <li><code>RATE_LIMIT_BURST</code> - Burst capacity (default: 20)</li>
+                </ul>
+
+                <h3>Service Startup</h3>
+                <ul>
+                    <li>Ensure MongoDB is running and accessible</li>
+                    <li>Ensure Kafka is running and accessible</li>
+                    <li>Run: <code>go run ./cmd/security-service</code></li>
+                    <li>Expected output: "✅ Security Service listening on :50051"</li>
+                </ul>
+
+                <h3>Production Checklist</h3>
+                <ul>
+                    <li>✅ gRPC Reflection enabled for tooling (Postman, grpcurl)</li>
+                    <li>✅ MongoDB with authentication and TLS</li>
+                    <li>✅ Kafka with authentication and encryption</li>
+                    <li>✅ Port 50051 restricted to gateway only</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 11: Audit & Compliance -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📋 Audit & Compliance</h2>
+                
+                <h3>MongoDB Audit Trail</h3>
+                <p>Every verification decision is logged to <code>api_protection.security_logs</code>:</p>
+                <ul>
+                    <li>Request details: path, method, client IP</li>
+                    <li>Decision: ALLOW or DENY verdict</li>
+                    <li>Reason: Detailed explanation if denied</li>
+                    <li>Timestamp: UTC timestamp of decision</li>
+                </ul>
+
+                <h3>Kafka Real-Time Alerts</h3>
+                <p>All DENY verdicts published to <code>security-alerts</code> topic:</p>
+                <ul>
+                    <li>Enables real-time SIEM integration</li>
+                    <li>Supports incident response automation</li>
+                    <li>Allows security analytics and dashboards</li>
+                </ul>
+
+                <h3>Compliance Benefits</h3>
+                <ul>
+                    <li>✅ Complete audit trail of all access decisions</li>
+                    <li>✅ Real-time security event notifications</li>
+                    <li>✅ Forensic analysis capabilities</li>
+                    <li>✅ OWASP Top 10 compliance</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 12: OWASP Coverage -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🛡️ OWASP Top 10 Coverage</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>OWASP Threat</th>
+                            <th>Protection Mechanism</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A1: Injection</td>
+                            <td>Input sanitization + pattern detection</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A2: Broken Auth</td>
+                            <td>Metadata extraction + validation</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A3: Sensitive Data Exposure</td>
+                            <td>Argon2id password hashing</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A4: XML External Entities</td>
+                            <td>Input validation + filtering</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A5: Broken Access Control</td>
+                            <td>RBAC + object-level authorization</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A6: Security Misconfiguration</td>
+                            <td>Environment-based config + defaults</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A7: XSS</td>
+                            <td>Input sanitization + character filtering</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                        <tr>
+                            <td>A8: CSRF</td>
+                            <td>Token validation + context checks</td>
+                            <td>✅ Protected</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 13: Key Benefits -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>🎯 Key Benefits</h2>
+                
+                <div class="benefit-box">
+                    <strong>🔒 Security First</strong>
+                    <p>Defense-in-depth approach with validation, sanitization, authorization, and rate limiting</p>
+                </div>
+
+                <div class="benefit-box">
+                    <strong>⚡ Performance</strong>
+                    <p>gRPC binary protocol + Go high-performance runtime ensures minimal latency</p>
+                </div>
+
+                <div class="benefit-box">
+                    <strong>📊 Observability</strong>
+                    <p>Complete audit trail in MongoDB + real-time alerts to Kafka for security operations</p>
+                </div>
+
+                <div class="benefit-box">
+                    <strong>🔧 Maintainability</strong>
+                    <p>Layered architecture with clear separation of concerns (validation, authorization, persistence)</p>
+                </div>
+
+                <div class="benefit-box">
+                    <strong>📈 Scalability</strong>
+                    <p>Horizontal scaling with stateless gRPC service + async Kafka alerts</p>
+                </div>
+
+                <div class="benefit-box">
+                    <strong>🎖️ Compliance</strong>
+                    <p>Meets OWASP Top 10 standards and provides audit trail for regulatory requirements</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Project Structure -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📁 Project Structure</h2>
+                
+                <p><strong>cmd/</strong> - Executable entry points</p>
+                <ul>
+                    <li>security-service/main.go - gRPC security service</li>
+                    <li>gateway/main.go - HTTP gateway (future implementation)</li>
+                    <li>test-client/main.go - Automated test harness</li>
+                </ul>
+
+                <p><strong>internal/</strong> - Private business logic</p>
+                <ul>
+                    <li>handler/ - gRPC adapter</li>
+                    <li>service/ - Validation, authorization, security logic</li>
+                    <li>store/ - MongoDB persistence</li>
+                    <li>interceptor/ - Middleware (metadata, rate limiting)</li>
+                </ul>
+
+                <p><strong>pkg/</strong> - Reusable utilities</p>
+                <ul>
+                    <li>crypto/ - Argon2id password hashing</li>
+                    <li>kafka/ - Alert publishing</li>
+                    <li>sanitize/ - Input sanitization</li>
+                </ul>
+
+                <p><strong>proto/</strong> - gRPC definitions</p>
+                <ul>
+                    <li>security.proto - Service and message contracts</li>
+                    <li>genProto/ - Generated Go code</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 15: Future Roadmap -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📈 Future Roadmap</h2>
+                
+                <h3>Phase 3: HTTP Gateway</h3>
+                <p>Complete implementation of <code>cmd/gateway/main.go</code>:</p>
+                <ul>
+                    <li>Receive HTTP requests on port 80/443</li>
+                    <li>Call gRPC Verify service</li>
+                    <li>Forward ALLOW verdicts to backend</li>
+                    <li>Block DENY verdicts (return 403 Forbidden)</li>
+                </ul>
+
+                <h3>Phase 4: Advanced Features</h3>
+                <ul>
+                    <li>Custom RBAC policies (database-driven)</li>
+                    <li>ML-based anomaly detection</li>
+                    <li>Request/response middleware (logging, transformation)</li>
+                    <li>Dashboard for real-time metrics</li>
+                    <li>WAF integration (Web Application Firewall)</li>
+                </ul>
+
+                <h3>Phase 5: Enterprise</h3>
+                <ul>
+                    <li>High availability with clustering</li>
+                    <li>Multi-tenant support</li>
+                    <li>API Gateway integration (Kong, Envoy)</li>
+                    <li>TLS/mTLS authentication</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 16: Close -->
+        <div class="slide" style="background: linear-gradient(135deg, #1e40af 0%, #0284c7 100%); color: white;">
+            <div style="text-align: center;">
+                <h1 style="color: white; font-size: 3em;">Thank You</h1>
+                <p style="font-size: 1.5em; margin-top: 40px;">API Protection Service</p>
+                <p style="font-size: 1.2em; margin-top: 20px; color: #e0f2fe;">Secure, Fast, Observable</p>
+                
+                <div style="margin-top: 80px; line-height: 2; font-size: 1.1em;">
+                    <p>📍 Repository: api-protection-service</p>
+                    <p>🚀 Service Port: 50051 (gRPC)</p>
+                    <p>📊 Logging: MongoDB + Kafka</p>
+                    <p>🔐 Security: Defense-in-depth</p>
+                </div>
+
+                <p style="margin-top: 80px; font-size: 1em; color: rgba(255,255,255,0.8);">
+                    Questions? Demo available with Postman gRPC client
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button onclick="previousSlide()">← Previous</button>
+        <button onclick="nextSlide()">Next →</button>
+    </div>
+
+    <div class="slide-number">
+        <span id="current">1</span> / <span id="total">16</span>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        document.getElementById('total').textContent = totalSlides;
+    </script>
+</body>
+</html>

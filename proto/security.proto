@@ -4,23 +4,51 @@ package security;
 
 option go_package = "api-protection/proto/genProto";
 
+// SecurityService provides request verification for the API Protection microservice.
+// It implements a gRPC API to validate, authorize, and log HTTP requests.
 service SecurityService {
+  // Verify checks if a request should be allowed or denied based on validation and RBAC rules.
+  // Step 1: Validates input (path format, HTTP method, IP address)
+  // Step 2: Checks RBAC rules based on user roles and resource path
+  // Step 3: Logs decision to MongoDB and publishes alerts to Kafka on denial
   rpc Verify(VerifyRequest) returns (VerifyResponse);
 }
 
+// VerifyRequest is the request payload for the Verify RPC.
 message VerifyRequest {
+  // path: HTTP request path (must start with /, max 2048 chars)
+  // Example: "/api/users", "/admin/dashboard", "/api/public/docs"
   string path = 1;
+  
+  // method: HTTP method (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS)
   string method = 2;
+  
+  // client_ip: Client IP address (IPv4 or IPv6)
+  // Example: "192.168.1.100" or "2001:db8::1"
   string client_ip = 3;
 }
 
+// VerifyResponse is the response payload from the Verify RPC.
 message VerifyResponse {
+  // verdict: Authorization decision (ALLOW or DENY)
   Verdict verdict = 1;
+  
+  // reason: Explanation of denial (empty if ALLOW)
+  // Examples:
+  // - "validation: path field must start with /"
+  // - "rbac: no role grants access to this resource"
+  // - "object-level: access denied to another user's resource"
   string reason = 2;
 }
 
+// Verdict enum represents the authorization decision.
 enum Verdict {
+  // Unspecified verdict (used as default/error state)
   VERDICT_UNSPECIFIED = 0;
+  
+  // Request is allowed to proceed
   ALLOW = 1;
+  
+  // Request should be blocked/denied
   DENY = 2;
 }

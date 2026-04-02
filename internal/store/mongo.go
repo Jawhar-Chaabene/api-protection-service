@@ -36,17 +36,30 @@ type MongoStore struct {
 
 // NewMongoStore creates a MongoDB store and verifies the connection.
 func NewMongoStore(ctx context.Context, uri, dbName string) (*MongoStore, error) {
+	log.Printf("[MongoDB] Connecting to: %s", uri)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
+		log.Printf("[MongoDB] ❌ Connection failed: %v", err)
 		return nil, err
 	}
+	log.Printf("[MongoDB] ✅ Client created successfully")
 
+	log.Printf("[MongoDB] Pinging server to verify connection...")
 	if err := client.Ping(ctx, nil); err != nil {
+		log.Printf("[MongoDB] ❌ Ping failed: %v", err)
 		_ = client.Disconnect(ctx)
 		return nil, err
 	}
+	log.Printf("[MongoDB] ✅ Server ping successful")
 
-	collection := client.Database(dbName).Collection(collectionName)
+	log.Printf("[MongoDB] Getting database: %s", dbName)
+	database := client.Database(dbName)
+	log.Printf("[MongoDB] ✅ Database '%s' ready", dbName)
+
+	log.Printf("[MongoDB] Getting collection: %s", collectionName)
+	collection := database.Collection(collectionName)
+	log.Printf("[MongoDB] ✅ Collection '%s' ready", collectionName)
+
 	return &MongoStore{client: client, collection: collection}, nil
 }
 
@@ -71,5 +84,6 @@ func (m *MongoStore) SaveLog(ctx context.Context, request *pb.VerifyRequest, res
 
 // Close disconnects the MongoDB client.
 func (m *MongoStore) Close(ctx context.Context) error {
+	log.Printf("[MongoDB] Disconnecting from MongoDB...")
 	return m.client.Disconnect(ctx)
 }
