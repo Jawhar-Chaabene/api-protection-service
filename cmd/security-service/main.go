@@ -7,17 +7,15 @@ import (
 	"log"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 
 	"api-protection/internal/handler"
-	"api-protection/internal/interceptor"
+	"api-protection/internal/pipeline"
 	"api-protection/internal/service"
 	"api-protection/internal/store"
 	"api-protection/pkg/kafka"
 	pb "api-protection/proto/genProto"
 
-	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -64,24 +62,9 @@ func main() {
 	}
 	defer producer.Close()
 
-	rlConfig := interceptor.DefaultRateLimitConfig()
-	if rps := getEnv("RATE_LIMIT_RPS", ""); rps != "" {
-		if n, err := strconv.ParseFloat(rps, 64); err == nil {
-			rlConfig.RPS = rate.Limit(n)
-		}
-	}
-	if burst := getEnv("RATE_LIMIT_BURST", ""); burst != "" {
-		if n, err := strconv.Atoi(burst); err == nil {
-			rlConfig.Burst = n
-		}
-	}
-
-	chain := grpc.ChainUnaryInterceptor(
-		interceptor.NewRateLimitInterceptor(rlConfig),
-		interceptor.MetadataInterceptor(),
-	)
-
-	svc := service.NewSecurityService(mongoStore, producer, &service.DefaultRBAC{})
+	cfg := pipeline.FromEnv()
+	pipe := pipeline.BuildDefaultPipeline(cfg, mongoStore)
+	svc := service.NewSecurityService(mongoStore, producer, pipe)
 	h := handler.NewSecurityGRPCHandler(svc)
 
 	lis, err := net.Listen("tcp", ":50051")
@@ -90,7 +73,7 @@ func main() {
 	}
 	defer lis.Close()
 
-	grpcServer := grpc.NewServer(chain)
+	grpcServer := grpc.NewServer()
 	pb.RegisterSecurityServiceServer(grpcServer, h)
 	reflection.Register(grpcServer)
 

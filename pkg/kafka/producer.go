@@ -13,12 +13,15 @@ const topic = "security-alerts"
 
 // AlertRecord represents an alert message sent to Kafka.
 type AlertRecord struct {
-	Path      string    `json:"path"`
-	Method    string    `json:"method"`
-	ClientIP  string    `json:"client_ip"`
-	Verdict   string    `json:"verdict"`
-	Reason    string    `json:"reason"`
-	Timestamp time.Time `json:"timestamp"`
+	Timestamp  time.Time `json:"timestamp"`
+	RequestID  string    `json:"request_id"`
+	Path       string    `json:"path"`
+	Method     string    `json:"method"`
+	ClientIP   string    `json:"client_ip"`
+	Decision   string    `json:"decision"`
+	Reason     string    `json:"reason"`
+	UserID     string    `json:"user_id,omitempty"`
+	HTTPStatus int32     `json:"http_status"`
 }
 
 // Producer wraps a Kafka client for publishing security alerts.

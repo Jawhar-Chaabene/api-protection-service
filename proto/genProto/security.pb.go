@@ -21,12 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Verdict enum represents the authorization decision.
 type Verdict int32
 
 const (
+	// Unspecified verdict (used as default/error state)
 	Verdict_VERDICT_UNSPECIFIED Verdict = 0
-	Verdict_ALLOW               Verdict = 1
-	Verdict_DENY                Verdict = 2
+	// Request is allowed to proceed
+	Verdict_ALLOW Verdict = 1
+	// Request should be blocked/denied
+	Verdict_DENY Verdict = 2
 )
 
 // Enum value maps for Verdict.
@@ -70,11 +74,29 @@ func (Verdict) EnumDescriptor() ([]byte, []int) {
 	return file_security_proto_rawDescGZIP(), []int{0}
 }
 
+// VerifyRequest is the request payload for the Verify RPC.
 type VerifyRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
-	Method        string                 `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
-	ClientIp      string                 `protobuf:"bytes,3,opt,name=client_ip,json=clientIp,proto3" json:"client_ip,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// path: HTTP request path (must start with /, max 2048 chars)
+	// Example: "/api/users", "/admin/dashboard", "/api/public/docs"
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// method: HTTP method (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS)
+	Method string `protobuf:"bytes,2,opt,name=method,proto3" json:"method,omitempty"`
+	// client_ip: Client IP address (IPv4 or IPv6)
+	// Example: "192.168.1.100" or "2001:db8::1"
+	ClientIp string `protobuf:"bytes,3,opt,name=client_ip,json=clientIp,proto3" json:"client_ip,omitempty"`
+	// headers: normalized HTTP headers as key/value pairs.
+	Headers map[string]string `protobuf:"bytes,4,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// user_id: optional user identifier propagated by trusted upstreams.
+	UserId string `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// roles: optional roles propagated by trusted upstreams.
+	Roles []string `protobuf:"bytes,6,rep,name=roles,proto3" json:"roles,omitempty"`
+	// api_key: optional API key from x-api-key header.
+	ApiKey string `protobuf:"bytes,7,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	// request_id: request correlation id from gateway.
+	RequestId string `protobuf:"bytes,8,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	// body: raw request body bytes (best effort, size limited at gateway).
+	Body          []byte `protobuf:"bytes,9,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -130,10 +152,67 @@ func (x *VerifyRequest) GetClientIp() string {
 	return ""
 }
 
+func (x *VerifyRequest) GetHeaders() map[string]string {
+	if x != nil {
+		return x.Headers
+	}
+	return nil
+}
+
+func (x *VerifyRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *VerifyRequest) GetRoles() []string {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+func (x *VerifyRequest) GetApiKey() string {
+	if x != nil {
+		return x.ApiKey
+	}
+	return ""
+}
+
+func (x *VerifyRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *VerifyRequest) GetBody() []byte {
+	if x != nil {
+		return x.Body
+	}
+	return nil
+}
+
+// VerifyResponse is the response payload from the Verify RPC.
 type VerifyResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Verdict       Verdict                `protobuf:"varint,1,opt,name=verdict,proto3,enum=security.Verdict" json:"verdict,omitempty"`
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// verdict: Authorization decision (ALLOW or DENY)
+	Verdict Verdict `protobuf:"varint,1,opt,name=verdict,proto3,enum=security.Verdict" json:"verdict,omitempty"`
+	// reason: Explanation of denial (empty if ALLOW)
+	// Examples:
+	// - "validation: path field must start with /"
+	// - "rbac: no role grants access to this resource"
+	// - "object-level: access denied to another user's resource"
+	Reason string `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	// http_status: status code the gateway should return on DENY.
+	HttpStatus int32 `protobuf:"varint,3,opt,name=http_status,json=httpStatus,proto3" json:"http_status,omitempty"`
+	// user_id: resolved user id after token/metadata extraction.
+	UserId string `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// roles: resolved user roles after token/metadata extraction.
+	Roles []string `protobuf:"bytes,5,rep,name=roles,proto3" json:"roles,omitempty"`
+	// correlation_id: request id used across logs/events.
+	CorrelationId string `protobuf:"bytes,6,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -182,18 +261,61 @@ func (x *VerifyResponse) GetReason() string {
 	return ""
 }
 
+func (x *VerifyResponse) GetHttpStatus() int32 {
+	if x != nil {
+		return x.HttpStatus
+	}
+	return 0
+}
+
+func (x *VerifyResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *VerifyResponse) GetRoles() []string {
+	if x != nil {
+		return x.Roles
+	}
+	return nil
+}
+
+func (x *VerifyResponse) GetCorrelationId() string {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return ""
+}
+
 var File_security_proto protoreflect.FileDescriptor
 
 const file_security_proto_rawDesc = "" +
 	"\n" +
-	"\x0esecurity.proto\x12\bsecurity\"X\n" +
+	"\x0esecurity.proto\x12\bsecurity\"\xcf\x02\n" +
 	"\rVerifyRequest\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x12\x16\n" +
 	"\x06method\x18\x02 \x01(\tR\x06method\x12\x1b\n" +
-	"\tclient_ip\x18\x03 \x01(\tR\bclientIp\"U\n" +
+	"\tclient_ip\x18\x03 \x01(\tR\bclientIp\x12>\n" +
+	"\aheaders\x18\x04 \x03(\v2$.security.VerifyRequest.HeadersEntryR\aheaders\x12\x17\n" +
+	"\auser_id\x18\x05 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05roles\x18\x06 \x03(\tR\x05roles\x12\x17\n" +
+	"\aapi_key\x18\a \x01(\tR\x06apiKey\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\b \x01(\tR\trequestId\x12\x12\n" +
+	"\x04body\x18\t \x01(\fR\x04body\x1a:\n" +
+	"\fHeadersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xcc\x01\n" +
 	"\x0eVerifyResponse\x12+\n" +
 	"\averdict\x18\x01 \x01(\x0e2\x11.security.VerdictR\averdict\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason*7\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1f\n" +
+	"\vhttp_status\x18\x03 \x01(\x05R\n" +
+	"httpStatus\x12\x17\n" +
+	"\auser_id\x18\x04 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05roles\x18\x05 \x03(\tR\x05roles\x12%\n" +
+	"\x0ecorrelation_id\x18\x06 \x01(\tR\rcorrelationId*7\n" +
 	"\aVerdict\x12\x17\n" +
 	"\x13VERDICT_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05ALLOW\x10\x01\x12\b\n" +
@@ -214,21 +336,23 @@ func file_security_proto_rawDescGZIP() []byte {
 }
 
 var file_security_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_security_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_security_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_security_proto_goTypes = []any{
 	(Verdict)(0),           // 0: security.Verdict
 	(*VerifyRequest)(nil),  // 1: security.VerifyRequest
 	(*VerifyResponse)(nil), // 2: security.VerifyResponse
+	nil,                    // 3: security.VerifyRequest.HeadersEntry
 }
 var file_security_proto_depIdxs = []int32{
-	0, // 0: security.VerifyResponse.verdict:type_name -> security.Verdict
-	1, // 1: security.SecurityService.Verify:input_type -> security.VerifyRequest
-	2, // 2: security.SecurityService.Verify:output_type -> security.VerifyResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: security.VerifyRequest.headers:type_name -> security.VerifyRequest.HeadersEntry
+	0, // 1: security.VerifyResponse.verdict:type_name -> security.Verdict
+	1, // 2: security.SecurityService.Verify:input_type -> security.VerifyRequest
+	2, // 3: security.SecurityService.Verify:output_type -> security.VerifyResponse
+	3, // [3:4] is the sub-list for method output_type
+	2, // [2:3] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_security_proto_init() }
@@ -242,7 +366,7 @@ func file_security_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_security_proto_rawDesc), len(file_security_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

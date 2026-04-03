@@ -26,6 +26,24 @@ message VerifyRequest {
   // client_ip: Client IP address (IPv4 or IPv6)
   // Example: "192.168.1.100" or "2001:db8::1"
   string client_ip = 3;
+
+  // headers: normalized HTTP headers as key/value pairs.
+  map<string, string> headers = 4;
+
+  // user_id: optional user identifier propagated by trusted upstreams.
+  string user_id = 5;
+
+  // roles: optional roles propagated by trusted upstreams.
+  repeated string roles = 6;
+
+  // api_key: optional API key from x-api-key header.
+  string api_key = 7;
+
+  // request_id: request correlation id from gateway.
+  string request_id = 8;
+
+  // body: raw request body bytes (best effort, size limited at gateway).
+  bytes body = 9;
 }
 
 // VerifyResponse is the response payload from the Verify RPC.
@@ -39,6 +57,18 @@ message VerifyResponse {
   // - "rbac: no role grants access to this resource"
   // - "object-level: access denied to another user's resource"
   string reason = 2;
+
+  // http_status: status code the gateway should return on DENY.
+  int32 http_status = 3;
+
+  // user_id: resolved user id after token/metadata extraction.
+  string user_id = 4;
+
+  // roles: resolved user roles after token/metadata extraction.
+  repeated string roles = 5;
+
+  // correlation_id: request id used across logs/events.
+  string correlation_id = 6;
 }
 
 // Verdict enum represents the authorization decision.

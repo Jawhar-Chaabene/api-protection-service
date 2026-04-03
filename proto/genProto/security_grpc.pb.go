@@ -25,7 +25,14 @@ const (
 // SecurityServiceClient is the client API for SecurityService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// SecurityService provides request verification for the API Protection microservice.
+// It implements a gRPC API to validate, authorize, and log HTTP requests.
 type SecurityServiceClient interface {
+	// Verify checks if a request should be allowed or denied based on validation and RBAC rules.
+	// Step 1: Validates input (path format, HTTP method, IP address)
+	// Step 2: Checks RBAC rules based on user roles and resource path
+	// Step 3: Logs decision to MongoDB and publishes alerts to Kafka on denial
 	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
 }
 
@@ -50,7 +57,14 @@ func (c *securityServiceClient) Verify(ctx context.Context, in *VerifyRequest, o
 // SecurityServiceServer is the server API for SecurityService service.
 // All implementations must embed UnimplementedSecurityServiceServer
 // for forward compatibility.
+//
+// SecurityService provides request verification for the API Protection microservice.
+// It implements a gRPC API to validate, authorize, and log HTTP requests.
 type SecurityServiceServer interface {
+	// Verify checks if a request should be allowed or denied based on validation and RBAC rules.
+	// Step 1: Validates input (path format, HTTP method, IP address)
+	// Step 2: Checks RBAC rules based on user roles and resource path
+	// Step 3: Logs decision to MongoDB and publishes alerts to Kafka on denial
 	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
 	mustEmbedUnimplementedSecurityServiceServer()
 }

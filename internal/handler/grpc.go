@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 
-	pb "api-protection/proto/genProto"
 	"api-protection/internal/service"
+	pb "api-protection/proto/genProto"
 )
 
 // SecurityGRPCHandler adapts the gRPC SecurityServiceServer interface to our business logic.

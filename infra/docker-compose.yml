@@ -1,0 +1,83 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.gateway
+    container_name: cybershield-gateway
+    env_file:
+      - ../.env
+    environment:
+      GATEWAY_PORT: ${GATEWAY_PORT:-8080}
+      SECURITY_SERVICE_ADDR: security-service:50051
+      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:3000}
+      GATEWAY_TIMEOUT_SECONDS: ${GATEWAY_TIMEOUT_SECONDS:-30}
+      GATEWAY_MAX_BODY_BYTES: ${GATEWAY_MAX_BODY_BYTES:-1048576}
+    depends_on:
+      - security-service
+    ports:
+      - "8080:8080"
+
+  security-service:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.security
+    container_name: cybershield-security-service
+    env_file:
+      - ../.env
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017
+      MONGODB_DB: ${MONGODB_DB:-api_protection}
+      KAFKA_BROKERS: kafka:9092
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+      JWT_ALGORITHMS: ${JWT_ALGORITHMS:-HS256}
+      RATE_LIMIT_RPS: ${RATE_LIMIT_RPS:-10}
+      RATE_LIMIT_BURST: ${RATE_LIMIT_BURST:-20}
+      REQUIRE_API_KEY: ${REQUIRE_API_KEY:-true}
+      MAX_BODY_BYTES: ${MAX_BODY_BYTES:-1048576}
+      UPLOAD_MAX_BYTES: ${UPLOAD_MAX_BYTES:-10485760}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+    depends_on:
+      - mongodb
+      - kafka
+    ports:
+      - "50051:50051"
+
+  mongodb:
+    image: mongo:7
+    container_name: cybershield-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_DB:-api_protection}
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: cybershield-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: cybershield-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 1
+
+volumes:
+  mongo_data:

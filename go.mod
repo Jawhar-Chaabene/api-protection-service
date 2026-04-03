@@ -4,6 +4,7 @@ go 1.26.1
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/twmb/franz-go v1.18.0
 	go.mongodb.org/mongo-driver v1.17.0
 	golang.org/x/crypto v0.46.0
